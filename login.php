@@ -2,7 +2,6 @@
 session_start();
 // header.php
 include ('header.php');
-include "helper.php";
 ?>
 
 
@@ -42,11 +41,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   <form action = "" method = "post">
     <div class="form-group">
       <label for="username">UserName:</label>
-      <input type="text" class="form-control" id="username" placeholder="Enter UserName" name="username"require>
+      <input type="text" class="form-control" id="username" placeholder="Enter UserName" name="username"required>
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input type="password" class="form-control" id="password" placeholder="Enter password" name="password"require>
+      <input type="password" class="form-control" id="password" placeholder="Enter password" name="password"required>
     </div>
     <div class="form-group form-check">
       <label class="form-check-label">
