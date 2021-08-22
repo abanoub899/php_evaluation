@@ -7,32 +7,42 @@ include ('header.php');
 
 <?php
 include("config.php");
-// session_start();
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
    // username and password sent from form 
-   
-   $myusername = mysqli_real_escape_string($db,$_POST['username']);
-   $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
-   
-   $sql = "SELECT id FROM users WHERE username = '$myusername' and password = '$mypassword'";
-   $result = mysqli_query($db,$sql);
-   $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-   $active = $row['active'];
-   
-   $count = mysqli_num_rows($result);
-   
-   // If result matched $myusername and $mypassword, table row must be 1 row
- 
-   if($count == 1) {
-      // session_register("myusername");
-      $_SESSION['login_user'] = $myusername;
-      // echo "here comes login user";
-      header("location: welcome.php");
-   }else {
-      $error = "Your Login Name or Password is invalid";
-   }
+   if(!empty($_POST['username']) && !empty($_POST['password'])) {  
+
+    $myusername = mysqli_real_escape_string($db,$_POST['username']);
+    $mypassword =md5(mysqli_real_escape_string($db,$_POST['password'])) ; 
+    
+    $sql = "SELECT id FROM users WHERE username = '$myusername' and password = '$mypassword'";
+    $result = mysqli_query($db,$sql);
+    $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+    $active = $row['active'];
+    
+    $count = mysqli_num_rows($result);
+    
+    // If result matched $myusername and $mypassword, table row must be 1 row
+  
+    if($count == 1) {
+
+      	// if remember me clicked . Values will be stored 
+			if(!empty($_POST["remember"])) {
+      //  $_SESSION['login_user'] = $myusername;
+      //COOKIES for username
+// setcookie ("user_login",$_POST["username"],time()+ (10 * 365 * 24 * 60 * 60));
+//COOKIES for password
+setcookie ("userpassword",$_POST["password"],time()+ (10 * 365 * 24 * 60 * 60));
+         }
+       header("location: welcome.php");
+    }
+    else {
+       $error = "Your Login Name or Password is invalid";
+    }
+    
 }
+}
+
 ?>
 
 <section id="login-form">
@@ -45,7 +55,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input type="password" class="form-control" id="password" placeholder="Enter password" name="password"required>
+      <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" value="<?php if(isset($_COOKIE["userpassword"])) { echo $_COOKIE["userpassword"]; } ?>"required>
     </div>
     <div class="form-group form-check">
       <label class="form-check-label">
