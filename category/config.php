@@ -2,7 +2,7 @@
 $hostname     = "localhost";
 $username     = "root";
 $password     = "";
-$databasename = "codingstatus.com";
+$databasename = "evaluation";
 // Create connection
 $conn = mysqli_connect($hostname, $username, $password,$databasename);
 // Check connection
